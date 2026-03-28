@@ -6,9 +6,9 @@ export function createTaskElement(task) {
   taskCard.setAttribute("role", "button");
   taskCard.setAttribute("tabindex", "0");
 
+  // Only show the title
   taskCard.innerHTML = `
     <h3 class="task-title">${task.title}</h3>
-    <p class="task-description">${task.description}</p>
   `;
 
   taskCard.addEventListener("click", () => {
@@ -47,3 +47,4 @@ function openTaskDetailsModal(task) {
     console.error("Unable to open task detail modal:", error);
   }
 }
+

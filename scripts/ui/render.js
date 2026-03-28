@@ -1,8 +1,7 @@
 import { createTaskElement } from "./taskElement.js";
 
 export function clearExistingTasks() {
-  const tasksContainers = document.querySelectorAll(".tasks-container");
-  tasksContainers.forEach((container) => {
+  document.querySelectorAll(".tasks-container").forEach(container => {
     container.innerHTML = "";
   });
 }
@@ -10,50 +9,26 @@ export function clearExistingTasks() {
 export function renderTasks(tasks) {
   clearExistingTasks();
 
-  const todoContainer = document
-    .querySelector('.column-div[data-status="todo"]')
-    ?.querySelector(".tasks-container");
-  const doingContainer = document
-    .querySelector('.column-div[data-status="doing"]')
-    ?.querySelector(".tasks-container");
-  const doneContainer = document
-    .querySelector('.column-div[data-status="done"]')
-    ?.querySelector(".tasks-container");
+  const todoContainer = document.querySelector('.column-div[data-status="todo"]')?.querySelector(".tasks-container");
+  const doingContainer = document.querySelector('.column-div[data-status="doing"]')?.querySelector(".tasks-container");
+  const doneContainer = document.querySelector('.column-div[data-status="done"]')?.querySelector(".tasks-container");
 
-  
   const tasksByStatus = {
-    todo: tasks.filter((task) => task.status === "todo"),
-    doing: tasks.filter((task) => task.status === "doing"),
-    done: tasks.filter((task) => task.status === "done"),
+    todo: tasks.filter(task => task.status === "todo"),
+    doing: tasks.filter(task => task.status === "doing"),
+    done: tasks.filter(task => task.status === "done"),
   };
 
- 
   const counts = {
     todo: tasksByStatus.todo.length,
     doing: tasksByStatus.doing.length,
     done: tasksByStatus.done.length,
   };
 
-  
-  if (todoContainer) {
-    tasksByStatus.todo.forEach((task) => {
-      todoContainer.appendChild(createTaskElement(task));
-    });
-  }
+  if (todoContainer) tasksByStatus.todo.forEach(task => todoContainer.appendChild(createTaskElement(task)));
+  if (doingContainer) tasksByStatus.doing.forEach(task => doingContainer.appendChild(createTaskElement(task)));
+  if (doneContainer) tasksByStatus.done.forEach(task => doneContainer.appendChild(createTaskElement(task)));
 
-  if (doingContainer) {
-    tasksByStatus.doing.forEach((task) => {
-      doingContainer.appendChild(createTaskElement(task));
-    });
-  }
-
-  if (doneContainer) {
-    tasksByStatus.done.forEach((task) => {
-      doneContainer.appendChild(createTaskElement(task));
-    });
-  }
-
-  /
   updateColumnHeaderCounts(counts);
 }
 
@@ -66,4 +41,3 @@ function updateColumnHeaderCounts(counts) {
   if (doingHeader) doingHeader.textContent = `DOING (${counts.doing})`;
   if (doneHeader) doneHeader.textContent = `DONE (${counts.done})`;
 }
-
