@@ -30,6 +30,16 @@
         <h4 id="headline-sidepanel">ALL BOARDS (1)</h4>
         <button class="board-btn">Launch Career</button>
       </div>
+      <div class="theme-toggle-div">
+        <span class="theme-toggle-text">LIGHT</span>
+        <label class="switch">
+          <input type="checkbox" id="theme-toggle-checkbox" />
+          <span class="slider round"></span>
+        </label>
+        <span class="theme-toggle-text">DARK</span>
+         <button onclick="hideSidebar()">Hide Sidebar</button>
+      </div>
+      
     </nav>
 
     <!-- Main Layout: Header with board title, add task button, and main content area for task columns. -->
@@ -48,6 +58,7 @@
         <button id="add-new-task-btn" class="primary-btn">
           + Add New Task
         </button>
+        
       </header>
 
       <div class="container">
