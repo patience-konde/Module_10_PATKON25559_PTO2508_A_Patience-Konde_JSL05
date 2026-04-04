@@ -28,6 +28,42 @@ body {
   background-color: var(--secondary-color);
   font-size: 1rem; /* Base font size for rem scaling */
 }
+/* Light mode */
+body.light-mode {
+  background-color: #ffffff;
+  color: #000000;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Dark mode */
+body.dark-mode {
+  background-color: #1e1e1e;
+  color: #f4f4f4;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Sidebar inherits body theme */
+body.light-mode .sidebar {
+  background-color: #f4f4f4;
+  color: #000;
+}
+
+body.dark-mode .sidebar {
+  background-color: #2c2c2c;
+  color: #fff;
+}
+
+/* Buttons adapt too */
+body.light-mode button {
+  background-color: #6a0dad;
+  color: #fff;
+}
+
+body.dark-mode button {
+  background-color: #4b0082;
+  color: #fff;
+}
+
 
 /* ================
    Sidebar Layout
@@ -220,39 +256,6 @@ header {
 .theme-toggle-div button:hover {
   background-color: #4b0082;
 }
-
-/* Light mode */
-body.light-mode {
-  background-color: #ffffff;
-  color: #000000;
-}
-
-body.light-mode .sidebar {
-  background-color: #f4f4f4;
-  color: #000;
-}
-
-body.light-mode button {
-  background-color: #6a0dad;
-  color: #fff;
-}
-
-/* Dark mode */
-body.dark-mode {
-  background-color: #1e1e1e;
-  color: #f4f4f4;
-}
-
-body.dark-mode .sidebar {
-  background-color: #2c2c2c;
-  color: #fff;
-}
-
-body.dark-mode button {
-  background-color: #4b0082;
-  color: #fff;
-}
-
 
 
 

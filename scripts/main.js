@@ -10,6 +10,15 @@ import {
   setupNewTaskModalHandler
 } from "./ui/modalHandlers.js";
 
+// Import theme toggle
+
+import { initThemeToggle } from "./ui/theme.js";
+
+document.addEventListener("DOMContentLoaded", () => {
+  initThemeToggle();
+});
+
+
 // Initialize the board
 function initialTasksBoard() {
   const tasks = loadTasksFromStorage();
