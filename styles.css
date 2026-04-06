@@ -15,6 +15,15 @@
   --sidebar-width: 300px; /* Sidebar fixed width */
 }
 
+body.dark-mode {
+  --primary-color: #2b2c37;
+  --secondary-color: #20212c;
+  --primary-font-color: #ffffff;
+  --secondary-font-color: #828fa3;
+  --primary-btn-color: #635fc7;
+  --primary-box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
 /* ================
    Base Elements
 ================ */
@@ -55,12 +64,12 @@ body.dark-mode .sidebar {
 
 /* Buttons adapt too */
 body.light-mode button {
-  background-color: #6a0dad;
+  background-color: #635fc7;
   color: #fff;
 }
 
 body.dark-mode button {
-  background-color: #4b0082;
+  background-color: #635fc7;
   color: #fff;
 }
 
@@ -83,8 +92,14 @@ body.dark-mode button {
   justify-content: flex-start;
 }
 
+#side-logo-div {
+  margin: 20px 20px 40px 20px; /* cleaner spacing */
+}
+
 #logo {
-  width: 100%; /* Make logo responsive within container */
+  width: 140px;     /* FIX: prevent stretching */
+  height: auto;
+  object-fit: contain;
 }
 
 .boards-nav-links-div {
@@ -161,7 +176,7 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* pushes footer to bottom */
-  width: 250px;
+  width: var(--sidebar-width);
   height: 100vh;
   background-color: #f4f4f4;
   padding: 20px;
@@ -170,6 +185,7 @@ header {
   transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
+
 /* Hidden state for sidebar */
 .sidebar.hidden {
   transform: translateX(-100%);
@@ -177,18 +193,39 @@ header {
 }
 
 /* Footer block pinned at bottom */
+/* Container */
 .theme-toggle-div {
-  margin-top: auto; /* ensures it stays at bottom */
+  margin-top: auto;
+  display: flex;
+  flex-direction: row;
+  gap: 14px;
+  padding: 16px;
+  border-top: 1px solid #e4ebfa;
+}
+
+.toggle-group {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 10px;
+  background-color: #f4f7fd;
+  padding: 10px;
+  border-radius: 8px;
 }
+.theme-toggle-div button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: #e4ebfa;
+  color: #635fc7;
+  font-weight: 600;
+}
+
 
 /* Toggle text */
 .theme-toggle-text {
   font-weight: bold;
-  color: #6a0dad;
+  color: #635fc7;
 }
 
 /* Switch styling */
@@ -227,7 +264,7 @@ header {
 }
 
 .switch input:checked + .slider {
-  background-color: #6a0dad;
+  background-color: #635fc7;
 }
 
 .switch input:checked + .slider:before {
@@ -244,7 +281,7 @@ header {
 
 /* Hide button styling */
 .theme-toggle-div button {
-  background-color: #6a0dad;
+  background-color: #635fc7;
   color: #fff;
   border: none;
   padding: 6px 12px;
@@ -253,9 +290,21 @@ header {
   transition: background-color 0.3s ease;
 }
 
+
 .theme-toggle-div button:hover {
-  background-color: #4b0082;
+  background-color: #635fc7;
 }
+
+.side-bar.hidden {
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.side-bar {
+  transition: width 0.3s ease, padding 0.3s ease;
+}
+
 
 
 
@@ -268,6 +317,7 @@ header {
   flex-direction: column;
   padding-left: 35px;
   box-sizing: border-box;
+  margin-top: 16px;
 }
 
 .card-column-main {
@@ -458,6 +508,107 @@ form select {
   font-weight: 600;
   cursor: pointer;
   margin-right: 20px;
+}
+
+.custom-select {
+  position: relative;
+  width: 150px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.selected {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  position: absolute;
+  width: 100%;
+  display: none;
+}
+
+.options li {
+  padding: 8px;
+}
+
+.options li:hover {
+  background: #f0f0f0;
+}
+
+/* Colored dots */
+.red::before {
+  content: "● ";
+  color: #e74c3c;
+}
+
+.yellow::before {
+  content: "● ";
+  color: #f1c40f;
+}
+
+.green::before {
+  content: "● ";
+  color: #2ecc71;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* Desktop / Laptop → Row layout */
+@media (min-width: 768px) {
+  .modal-actions {
+    flex-direction: row;
+  }
+}
+
+/* Mobile → Column layout */
+@media (max-width: 767px) {
+  .modal-actions {
+    flex-direction: column;
+  }
+}
+
+/* Buttons base style */
+.modal-actions button {
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Save button (Purple) */
+#save-btn {
+  background-color: #635fc7;
+  color: #ffffff;
+}
+
+/* Delete button (Red) */
+#delete-btn {
+  background-color: #ea5555;
+  color: #ffffff;
+}
+
+/* Optional hover effects */
+#save-btn:hover {
+  background-color: #514bb8;
+}
+
+#delete-btn:hover {
+  background-color: #d84a4a;
 }
 
 /* New Task Modal Window */

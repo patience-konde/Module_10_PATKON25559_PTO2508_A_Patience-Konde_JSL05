@@ -2,34 +2,85 @@ import {
   loadTasksFromStorage,
   saveTasksToStorage,
 } from "../utils/localStorage.js";
+
 import { renderTasks } from "./render.js";
 
-export function setupModalCloseHandler() {
+let currentTaskId = null;
+
+/* =========================
+   EDIT MODAL HANDLERS
+========================= */
+export function setupEditModalHandlers() {
   const taskModal = document.getElementById("task-modal");
   const closeModalBtn = document.getElementById("close-modal-btn");
+  const saveBtn = document.getElementById("save-btn");
+  const deleteBtn = document.getElementById("delete-btn");
 
-  if (closeModalBtn) {
-    closeModalBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      if (taskModal) {
-        taskModal.close();
-      }
-    });
-  }
+  // Close modal
+  closeModalBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    taskModal.close();
+  });
 
+  taskModal?.addEventListener("click", (e) => {
+    if (e.target === taskModal) taskModal.close();
+  });
 
-  if (taskModal) {
-    taskModal.addEventListener("click", (e) => {
-      if (e.target === taskModal) {
-        taskModal.close();
-      }
-    });
-  }
+  // Save changes
+  saveBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    const title = document.getElementById("task-title").value.trim();
+    const description = document.getElementById("task-desc").value.trim();
+    const status = document.getElementById("task-status").value;
+    const priority = document.getElementById("task-priority").value;
+
+    const tasks = loadTasksFromStorage();
+    const index = tasks.findIndex((task) => task.id === currentTaskId);
+
+    if (index !== -1 && title && description) {
+      tasks[index] = {
+        ...tasks[index],
+        title,
+        description,
+        status,
+        priority,
+      };
+
+      saveTasksToStorage(tasks);
+      renderTasks(tasks);
+      taskModal.close();
+    } else {
+      alert("Please fill in all fields");
+    }
+  });
+
+  // Delete task
+  deleteBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    const tasks = loadTasksFromStorage();
+    const updatedTasks = tasks.filter((task) => task.id !== currentTaskId);
+
+    saveTasksToStorage(updatedTasks);
+    renderTasks(updatedTasks);
+    taskModal.close();
+  });
 }
 
-/**
- * Setup handlers for the "Add New Task" button and modal
- */
+// Open edit modal with task data
+export function openEditModal(task) {
+  currentTaskId = task.id;
+  document.getElementById("task-title").value = task.title;
+  document.getElementById("task-desc").value = task.description;
+  document.getElementById("task-status").value = task.status;
+  document.getElementById("task-priority").value = task.priority || "medium";
+
+  document.getElementById("task-modal").showModal();
+}
+
+/* =========================
+   NEW TASK MODAL HANDLERS
+========================= */
 export function setupNewTaskModalHandler() {
   const addTaskBtn = document.getElementById("add-new-task-btn");
   const newTaskModal = document.querySelector(".modal-overlay");
@@ -41,86 +92,61 @@ export function setupNewTaskModalHandler() {
     return;
   }
 
-
+  // Open modal
   addTaskBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    console.log("Add Task button clicked");
-    try {
-      newTaskModal.showModal();
-      console.log("Modal opened successfully");
-    } catch (error) {
-      console.error("Error opening modal:", error);
-    }
+    newTaskModal.showModal();
   });
 
-  if (cancelAddBtn) {
-    cancelAddBtn.addEventListener("click", (e) => {
-      e.preventDefault();
+  // Cancel modal
+  cancelAddBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    newTaskModal.close();
+  });
+
+  // Click outside closes modal
+  newTaskModal.addEventListener("click", (e) => {
+    if (e.target === newTaskModal) newTaskModal.close();
+  });
+
+  // Submit new task
+  newTaskForm?.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const title = document.getElementById("title-input").value.trim();
+    const description = document.getElementById("desc-input").value.trim();
+    const status = document.getElementById("select-status").value;
+    const priority = document.getElementById("select-priority")?.value || "medium";
+
+    if (title && description) {
+      const newTask = {
+        id: generateTaskId(),
+        title,
+        description,
+        status,
+        priority,
+        board: "Launch Career",
+      };
+
+      const tasks = loadTasksFromStorage();
+      tasks.push(newTask);
+
+      saveTasksToStorage(tasks);
+      renderTasks(tasks);
+
+      newTaskForm.reset();
       newTaskModal.close();
-    });
-  }
-
- 
-
-  
-  if (newTaskForm) {
-    newTaskForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      console.log("Form submitted");
-
-      const titleInput = document.getElementById("title-input");
-      const descInput = document.getElementById("desc-input");
-      const statusSelect = document.getElementById("select-status");
-
-      if (!titleInput || !descInput || !statusSelect) {
-        console.error("Form inputs not found");
-        return;
-      }
-
-      const title = titleInput.value.trim();
-      const description = descInput.value.trim();
-      const status = statusSelect.value;
-
-      console.log("Form values:", { title, description, status });
-
-      if (title && description) {
-        const newTask = {
-          id: generateTaskId(),
-          title,
-          description,
-          status,
-          board: "Launch Career",
-        };
-
-        console.log("Creating task:", newTask);
-
-        const tasks = loadTasksFromStorage();
-        tasks.push(newTask);
-        saveTasksToStorage(tasks);
-        console.log("Tasks saved to storage");
-
-        renderTasks(tasks);
-        console.log("Board re-rendered");
-
-        newTaskForm.reset();
-        newTaskModal.close();
-        console.log("Modal closed, form reset");
-      } else {
-        console.warn("Title or description is empty");
-      }
-    });
-  } else {
-    console.error("Form element not found");
-  }
+    } else {
+      alert("Please fill in all fields");
+    }
+  });
 }
 
-/**
- * Generate a unique task ID
- * @returns {number} - A unique task ID
- */
+/* =========================
+   GENERATE TASK ID
+========================= */
 function generateTaskId() {
   const tasks = loadTasksFromStorage();
   if (tasks.length === 0) return 1;
   return Math.max(...tasks.map((task) => task.id)) + 1;
 }
-

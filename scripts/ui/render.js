@@ -1,4 +1,5 @@
 import { createTaskElement } from "./taskElement.js";
+import { openEditModal } from "./modalHandlers.js"; // make sure path is correct
 
 export function clearExistingTasks() {
   document.querySelectorAll(".tasks-container").forEach(container => {
@@ -25,9 +26,29 @@ export function renderTasks(tasks) {
     done: tasksByStatus.done.length,
   };
 
-  if (todoContainer) tasksByStatus.todo.forEach(task => todoContainer.appendChild(createTaskElement(task)));
-  if (doingContainer) tasksByStatus.doing.forEach(task => doingContainer.appendChild(createTaskElement(task)));
-  if (doneContainer) tasksByStatus.done.forEach(task => doneContainer.appendChild(createTaskElement(task)));
+  if (todoContainer) {
+    tasksByStatus.todo.forEach(task => {
+      const el = createTaskElement(task);
+      el.addEventListener("click", () => openEditModal(task));
+      todoContainer.appendChild(el);
+    });
+  }
+
+  if (doingContainer) {
+    tasksByStatus.doing.forEach(task => {
+      const el = createTaskElement(task);
+      el.addEventListener("click", () => openEditModal(task));
+      doingContainer.appendChild(el);
+    });
+  }
+
+  if (doneContainer) {
+    tasksByStatus.done.forEach(task => {
+      const el = createTaskElement(task);
+      el.addEventListener("click", () => openEditModal(task));
+      doneContainer.appendChild(el);
+    });
+  }
 
   updateColumnHeaderCounts(counts);
 }

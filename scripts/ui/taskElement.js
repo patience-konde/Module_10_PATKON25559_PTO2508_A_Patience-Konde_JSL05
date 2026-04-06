@@ -1,3 +1,5 @@
+import { openEditModal } from "./modalHandlers.js";
+
 export function createTaskElement(task) {
   const taskCard = document.createElement("div");
   taskCard.className = "task-card";
@@ -6,45 +8,21 @@ export function createTaskElement(task) {
   taskCard.setAttribute("role", "button");
   taskCard.setAttribute("tabindex", "0");
 
-  // Only show the title
   taskCard.innerHTML = `
     <h3 class="task-title">${task.title}</h3>
   `;
 
+  // Click or keyboard opens edit modal
   taskCard.addEventListener("click", () => {
-    openTaskDetailsModal(task);
+    openEditModal(task);
   });
 
   taskCard.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      openTaskDetailsModal(task);
+      openEditModal(task);
     }
   });
 
   return taskCard;
 }
-
-function openTaskDetailsModal(task) {
-  const taskModal = document.getElementById("task-modal");
-  const titleInput = document.getElementById("task-title");
-  const descInput = document.getElementById("task-desc");
-  const statusSelect = document.getElementById("task-status");
-
-  if (!taskModal || !titleInput || !descInput || !statusSelect) return;
-
-  titleInput.value = task.title;
-  descInput.value = task.description;
-  statusSelect.value = task.status;
-
-  titleInput.disabled = true;
-  descInput.disabled = true;
-  statusSelect.disabled = true;
-
-  try {
-    taskModal.showModal();
-  } catch (error) {
-    console.error("Unable to open task detail modal:", error);
-  }
-}
-

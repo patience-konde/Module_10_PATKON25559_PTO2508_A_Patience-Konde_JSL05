@@ -38,11 +38,9 @@
       <span class="slider round"></span>
     </label>
     <span class="theme-toggle-text">DARK</span>
-    <button onclick="hideSidebar()">Hide Sidebar</button>
+<button onclick="toggleSidebar()">Toggle Sidebar</button>
   </div>
 </div>
-
-      
     </nav>
 
     <!-- Main Layout: Header with board title, add task button, and main content area for task columns. -->
@@ -118,8 +116,25 @@
           <option value="doing">doing</option>
           <option value="done">done</option>
         </select>
+  <label for="task-priority">Priority:</label>
+<div class="custom-select" id="task-priority">
+  <div class="selected">● Strong</div>
+  <ul class="options">
+    <li data-value="strong" class="red">● Strong</li>
+    <li data-value="medium" class="yellow">● Medium</li>
+    <li data-value="light" class="green">● Light</li>
+  </ul>
+</div>
+
+          <!-- ✅ ACTION BUTTONS -->
+    <div class="modal-actions">
+      <button type="button" id="save-btn">Save Changes</button>
+      <button type="button" id="delete-btn">Delete</button>
+    </div>
+
       </form>
     </dialog>
+
     <!-- New Task Modal: Form for adding a new task. -->
 
     <dialog class="modal-overlay">

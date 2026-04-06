@@ -5,10 +5,12 @@ import { loadTasksFromStorage } from "./utils/localStorage.js";
 import { clearExistingTasks, renderTasks } from "./ui/render.js";
 
 // Import UI handlers
-import {
-  setupModalCloseHandler,
-  setupNewTaskModalHandler
-} from "./ui/modalHandlers.js";
+import { setupEditModalHandlers, setupNewTaskModalHandler } from "./ui/modalHandlers.js";
+
+document.addEventListener("DOMContentLoaded", () => {
+  setupEditModalHandlers();
+  setupNewTaskModalHandler();
+});
 
 // Import theme toggle
 
@@ -27,6 +29,30 @@ function initialTasksBoard() {
   setupModalCloseHandler();
   setupNewTaskModalHandler();
 }
+const select = document.getElementById("task-priority");
+const selected = select.querySelector(".selected");
+const options = select.querySelector(".options");
+
+selected.addEventListener("click", () => {
+  options.style.display = options.style.display === "block" ? "none" : "block";
+});
+
+options.querySelectorAll("li").forEach(option => {
+  option.addEventListener("click", () => {
+    selected.textContent = option.textContent;
+    selected.className = "selected " + option.className;
+    options.style.display = "none";
+    // You can also store the value:
+    console.log("Selected priority:", option.dataset.value);
+  });
+});
+
+// Close dropdown if clicking outside
+window.addEventListener("click", (e) => {
+  if (!select.contains(e.target)) {
+    options.style.display = "none";
+  }
+});
 
 // Run once DOM is ready
 document.addEventListener("DOMContentLoaded", initialTasksBoard);
