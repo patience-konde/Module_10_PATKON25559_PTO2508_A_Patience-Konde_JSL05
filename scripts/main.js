@@ -20,14 +20,19 @@ document.addEventListener("DOMContentLoaded", () => {
   initThemeToggle();
 });
 
+// import sidebar functionality
+import initSidebar from "./ui/sideBar.js";
+
+document.addEventListener("DOMContentLoaded", () => {
+  initSidebar();
+});
+
 
 // Initialize the board
 function initialTasksBoard() {
   const tasks = loadTasksFromStorage();
   clearExistingTasks();
   renderTasks(tasks);
-  setupModalCloseHandler();
-  setupNewTaskModalHandler();
 }
 const select = document.getElementById("task-priority");
 const selected = select.querySelector(".selected");

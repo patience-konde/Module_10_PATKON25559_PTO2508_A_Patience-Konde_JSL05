@@ -37,7 +37,7 @@ export function initThemeToggle() {
   if (sidebar) {
     window.hideSidebar = () => sidebar.classList.add("collapsed");
     window.showSidebar = () => sidebar.classList.remove("collapsed");
-    window.toggleSidebar = () => {
+    window.toggleBtn = () => {
     sidebar.classList.toggle("collapsed");
   };
 
