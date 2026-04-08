@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // import sidebar functionality
-import initSidebar from "./ui/sideBar.js";
+import initSidebar from "./ui/sidebarManager.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   initSidebar();
