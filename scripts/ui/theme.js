@@ -10,9 +10,10 @@ export function initThemeToggle() {
     return;
   }
 
-  // Apply saved theme or default
-  const savedTheme = localStorage.getItem("theme") || "light";
-  applyTheme(savedTheme);
+  // Load saved theme
+  const savedTheme = localStorage.getItem("theme");
+  const initialTheme = savedTheme || "light";
+  applyTheme(initialTheme);
 
   // Toggle theme on button click
   toggleBtn.addEventListener("click", () => {
@@ -27,13 +28,13 @@ export function initThemeToggle() {
     if (theme === "dark") {
       document.body.classList.remove("light-mode");
       document.body.classList.add("dark-mode");
-      if (lightIcon) lightIcon.classList.remove("active");
-      if (darkIcon) darkIcon.classList.add("active");
+      if (lightIcon) lightIcon.style.opacity = "0.3";
+      if (darkIcon) darkIcon.style.opacity = "1";
     } else {
       document.body.classList.remove("dark-mode");
       document.body.classList.add("light-mode");
-      if (darkIcon) darkIcon.classList.remove("active");
-      if (lightIcon) lightIcon.classList.add("active");
+      if (lightIcon) lightIcon.style.opacity = "1";
+      if (darkIcon) darkIcon.style.opacity = "0.3";
     }
   }
 
@@ -42,5 +43,7 @@ export function initThemeToggle() {
     window.hideSidebar = () => sidebar.classList.add("collapsed");
     window.showSidebar = () => sidebar.classList.remove("collapsed");
     window.toggleSidebar = () => sidebar.classList.toggle("collapsed");
+  } else {
+    console.warn("Sidebar element not found");
   }
 }

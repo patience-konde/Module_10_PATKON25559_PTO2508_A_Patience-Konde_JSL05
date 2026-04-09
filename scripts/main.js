@@ -1,63 +1,85 @@
 // Import utilities
 import { loadTasksFromStorage } from "./utils/localStorage.js";
 
-// Import render functions (now inside ui/)
+// Import render functions
 import { clearExistingTasks, renderTasks } from "./ui/render.js";
 
 // Import UI handlers
-import { setupEditModalHandlers, setupNewTaskModalHandler } from "./ui/modalHandlers.js";
-
-document.addEventListener("DOMContentLoaded", () => {
-  setupEditModalHandlers();
-  setupNewTaskModalHandler();
-});
+import {
+  setupEditModalHandlers,
+  setupNewTaskModalHandler,
+} from "./ui/modalHandlers.js";
 
 // Import theme toggle
-
 import { initThemeToggle } from "./ui/theme.js";
 
+// Import sidebar
+import { setupSidebar } from "./ui/sidebarManager.js";
+
 document.addEventListener("DOMContentLoaded", () => {
+  // =========================
+  // INITIALIZE UI MODULES
+  // =========================
+  setupEditModalHandlers();
+  setupNewTaskModalHandler();
   initThemeToggle();
+  setupSidebar();
+
+  // =========================
+  // INITIAL TASK RENDER
+  // =========================
+  initialTasksBoard();
+
+  // =========================
+  // PRIORITY DROPDOWN
+  // =========================
+  setupPriorityDropdown();
 });
 
-// import sidebar functionality
-import initSidebar from "./ui/sidebarManager.js";
-
-document.addEventListener("DOMContentLoaded", () => {
-  initSidebar();
-});
-
-
-// Initialize the board
+// =========================
+// TASK BOARD INIT
+// =========================
 function initialTasksBoard() {
   const tasks = loadTasksFromStorage();
   clearExistingTasks();
   renderTasks(tasks);
 }
-const select = document.getElementById("task-priority");
-const selected = select.querySelector(".selected");
-const options = select.querySelector(".options");
 
-selected.addEventListener("click", () => {
-  options.style.display = options.style.display === "block" ? "none" : "block";
-});
+// =========================
+// PRIORITY DROPDOWN LOGIC
+// =========================
+function setupPriorityDropdown() {
+  const select = document.getElementById("select-priority");
 
-options.querySelectorAll("li").forEach(option => {
-  option.addEventListener("click", () => {
-    selected.textContent = option.textContent;
-    selected.className = "selected " + option.className;
-    options.style.display = "none";
-    // You can also store the value:
-    console.log("Selected priority:", option.dataset.value);
-  });
-});
-
-// Close dropdown if clicking outside
-window.addEventListener("click", (e) => {
-  if (!select.contains(e.target)) {
-    options.style.display = "none";
+  if (!select) {
+    console.error("❌ select-priority not found in DOM");
+    return;
   }
-});
 
-// Run once DOM is ready
-document.addEventListener("DOMContentLoaded", initialTasksBoard);
+  const selected = select.querySelector(".selected");
+  const options = select.querySelector(".options");
+
+  if (!selected || !options) return;
+
+  // Toggle dropdown
+  selected.addEventListener("click", (e) => {
+    e.stopPropagation();
+    options.classList.toggle("show");
+  });
+
+  // Select option
+  options.querySelectorAll("li").forEach((item) => {
+    item.addEventListener("click", () => {
+      selected.textContent = item.textContent;
+      selected.dataset.value = item.dataset.value;
+      options.classList.remove("show");
+    });
+  });
+
+  // Close when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!select.contains(e.target)) {
+      options.classList.remove("show");
+    }
+  });
+}

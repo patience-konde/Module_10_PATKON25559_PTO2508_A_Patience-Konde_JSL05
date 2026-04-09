@@ -73,7 +73,7 @@ export function openEditModal(task) {
   document.getElementById("task-title").value = task.title;
   document.getElementById("task-desc").value = task.description;
   document.getElementById("task-status").value = task.status;
-  document.getElementById("task-priority").value = task.priority || "medium";
+  document.getElementById("select-priority").value = task.priority || "medium";
 
   document.getElementById("task-modal").showModal();
 }
